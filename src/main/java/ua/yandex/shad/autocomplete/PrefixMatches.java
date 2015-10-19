@@ -17,19 +17,29 @@ public class PrefixMatches {
     private Trie trie;
 
     public int load(String... strings) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int cou = 0;
+        for(String s : strings){
+            String[] words = s.split(" ");
+            for(String word : words){
+                if(word.length() > 2){
+                    trie.add(new Tuple(word, word.length()));
+                    cou++;
+                }
+            }
+        }
+        return cou;
     }
 
     public boolean contains(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.contains(word);
     }
 
     public boolean delete(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.delete(word);
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.wordsWithPrefix(pref);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {

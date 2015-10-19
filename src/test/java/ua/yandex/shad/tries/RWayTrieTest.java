@@ -16,18 +16,6 @@ import org.junit.Ignore;
  */
 public class RWayTrieTest {
     
-    @Ignore
-    @Test
-    public void testRWayTrie(){
-        RWayTrie trie = new RWayTrie();
-        for(int i = 0; i < 26; i++){
-            for(int j = 0; j < 26; j++){
-                String expected = "" + (char)('a' + i) + (char)('a' + j);
-                Assert.assertEquals(trie.getBase(i, j), expected);
-            }
-        }
-    }
-    
     @Test
     public void testAdd(){
         RWayTrie trie = new RWayTrie();

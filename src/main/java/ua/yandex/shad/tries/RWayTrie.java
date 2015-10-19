@@ -6,10 +6,7 @@ public class RWayTrie implements Trie {
     
     public static int R = 26;
     
-//    private final String[][] base;
     private Node[] startNodes;
-    
-//    private Node root;
     
     private int size;
     
@@ -37,22 +34,14 @@ public class RWayTrie implements Trie {
     }
     
     public RWayTrie(){
-//        this.base = new String[R][R];
-//        for(int i = 0; i < R; i++){
-//            for(int j = 0; j < R; j++){
-//                base[i][j] = "" + (char)('a' + i) + (char)('a' + j);
-//            }
-//        }
+        
         this.startNodes = new Node[R * R];
         size = 0;
-        
+     
     }
     
-//    public String getBase(int i, int j){
-//        return base[i][j];
-//    }
-    
     private Node add(Node x, String s, int k){
+        
         if(x == null){
             x = new Node(s.charAt(k));
         }
@@ -70,17 +59,21 @@ public class RWayTrie implements Trie {
             size++;
         }
         return x;
+        
     }
 
     @Override
     public void add(Tuple t) {
+        
         Node x = this.startNodes[R * (t.term.charAt(0) - 'a') 
                 + (t.term.charAt(1) - 'a')];
         this.startNodes[R * (t.term.charAt(0) - 'a') 
                 + (t.term.charAt(1) - 'a')] = add(x, t.term, 2);
+        
     }
     
     private boolean contains(Node x, String s, int k){
+        
         if(x == null)
             return false;
         if(s.charAt(k) > x.c){
@@ -95,16 +88,20 @@ public class RWayTrie implements Trie {
         else{
             return x.val;
         }
+        
     }
 
     @Override
     public boolean contains(String word) {
+        
         Node x = this.startNodes[R * (word.charAt(0) - 'a') 
                 + (word.charAt(1) - 'a')];
         return contains(x, word, 2);
+        
     }
     
     private Node delete(Node x, String s, int k){
+        
         if(x == null)
             return x;
         if(s.charAt(k) > x.c){
@@ -130,10 +127,12 @@ public class RWayTrie implements Trie {
             size--;
         }
         return x;
+        
     }
 
     @Override
     public boolean delete(String word) {
+        
         int sizeWas = size;
         Node x = this.startNodes[R * (word.charAt(0) - 'a') 
                 + (word.charAt(1) - 'a')];
@@ -141,9 +140,11 @@ public class RWayTrie implements Trie {
                 + (word.charAt(1) - 'a')] = delete(x, word, 2);
         int sizeNow = size;
         return sizeWas - sizeNow == 1;
+        
     }
     
-    public void findWords(Node x, String s, ArrayList<String> arr){
+    private void findWords(Node x, String s, ArrayList<String> arr){
+        
         if(x == null)
             return;
         findWords(x.left, s, arr);
@@ -152,10 +153,12 @@ public class RWayTrie implements Trie {
         }
         findWords(x.middle, s + x.c, arr);
         findWords(x.right, s, arr);
+        
     }
 
     @Override
     public Iterable<String> words() {
+        
         ArrayList<String> words = new ArrayList();
         for(int i = 0; i < R; i++){
             for(int j = 0; j < R; j++){
@@ -164,11 +167,13 @@ public class RWayTrie implements Trie {
             }
         }
         return words;
+        
     }
     
-    public void findWordsWithPrefix(Node x, String s, String prefix, 
+    private void findWordsWithPrefix(Node x, String s, String prefix, 
             int k, ArrayList<String> arr
-            ){
+            ) {
+        
         if(x == null)
             return;
         if(k < prefix.length()){
@@ -193,10 +198,12 @@ public class RWayTrie implements Trie {
             findWordsWithPrefix(x.middle, s + x.c, prefix, k + 1, arr);
             findWordsWithPrefix(x.right, s, prefix, k, arr);
         }
+        
     }
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
+        
         if(s.length() == 0){
             return new ArrayList();
         }
@@ -218,11 +225,14 @@ public class RWayTrie implements Trie {
             findWordsWithPrefix(x, prefix, s, 2, words);
         }
         return words;
+        
     }
 
     @Override
     public int size() {
+        
         return size; 
+        
     }
 
 }
