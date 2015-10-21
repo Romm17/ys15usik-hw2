@@ -8,7 +8,7 @@ package ua.yandex.shad.tries;
 import java.util.Iterator;
 import org.junit.Test;
 import org.junit.Assert;
-import org.junit.Ignore;
+import ua.yandex.shad.collections.MyArrayList;
 
 /**
  *
@@ -19,54 +19,85 @@ public class RWayTrieTest {
     @Test
     public void testAdd(){
         RWayTrie trie = new RWayTrie();
-        trie.add(new Tuple("lololo", 6));
-        trie.add(new Tuple("lololk", 6));
-        trie.add(new Tuple("lolok", 5));
-        trie.add(new Tuple("loloa", 5));
-        Assert.assertTrue(trie.contains("lololo"));
-        Assert.assertTrue(trie.contains("lololk"));
-        Assert.assertTrue(trie.contains("lolok"));
-        Assert.assertTrue(trie.contains("loloa"));
-//        Assert.assertTrue(true);
+        trie.add(new Tuple("abcde", 5));
+        trie.add(new Tuple("abcdef", 6));
+        trie.add(new Tuple("abca", 4));
+        trie.add(new Tuple("abcz", 4));
+        Assert.assertTrue(trie.contains("abcde"));
+        Assert.assertTrue(trie.contains("abcdef"));
+        Assert.assertTrue(trie.contains("abca"));
+        Assert.assertTrue(trie.contains("abcz"));
     }
     
     @Test
     public void testDelete(){
         RWayTrie trie = new RWayTrie();
-        trie.add(new Tuple("lololo", 6));
-        trie.add(new Tuple("lololk", 6));
-        trie.add(new Tuple("lolok", 5));
-        trie.add(new Tuple("loloa", 5));
-        Assert.assertTrue(trie.contains("lolok"));
-        trie.delete("lolok");
-        Assert.assertEquals(trie.size(), 3);
-        Assert.assertFalse(trie.contains("lolok"));
+        trie.add(new Tuple("abcde", 5));
+        trie.add(new Tuple("abcdef", 6));
+        trie.add(new Tuple("abca", 4));
+        trie.add(new Tuple("abcz", 4));
+        trie.delete("abca");
+        trie.delete("abcz");
+        trie.delete("abcdef");
+        Assert.assertEquals(trie.size(), 1);
+        Assert.assertFalse(trie.contains("abca"));
+        Assert.assertFalse(trie.contains("abcz"));
+        Assert.assertFalse(trie.contains("abcdef"));
     }
     
     @Test
     public void testWords(){
         RWayTrie trie = new RWayTrie();
-        trie.add(new Tuple("lololo", 6));
-        trie.add(new Tuple("lololk", 6));
-        trie.add(new Tuple("lolok", 5));
-        trie.add(new Tuple("loloa", 5));
+        MyArrayList<String> expected = new MyArrayList();
+        expected.add("abca");
+        expected.add("abcde");
+        expected.add("abcdef");
+        expected.add("abcz");
+        trie.add(new Tuple("abcde", 5));
+        trie.add(new Tuple("abcdef", 6));
+        trie.add(new Tuple("abca", 4));
+        trie.add(new Tuple("abcz", 4));
         Iterable<String> words = trie.words();
-//        for(String s : words){
-//            System.out.println(s);
-//        }
+        Iterator<String> expect = expected.iterator();
+        Iterator<String> actual = words.iterator();
+        while(expect.hasNext() && actual.hasNext()){
+            Assert.assertTrue(expect.next().equals(actual.next()));
+        }
+        Assert.assertFalse(actual.hasNext());
+        Assert.assertFalse(expect.hasNext());
     }
     @Test
     public void testWordsWithPrefix(){
         RWayTrie trie = new RWayTrie();
-        trie.add(new Tuple("lololo", 6));
-        trie.add(new Tuple("lololk", 6));
-        trie.add(new Tuple("laloa", 5));
-        trie.add(new Tuple("lolok", 5));
-        trie.add(new Tuple("loloa", 5));
-        Iterable<String> words = trie.wordsWithPrefix("lo");
+        String[][] expected = {
+            {"abca", "abcde", "abcdef", "abcz"},
+            {"abcde", "abcdef"}
+        };
+        trie.add(new Tuple("abcde", 6));
+        trie.add(new Tuple("abcdef", 6));
+        trie.add(new Tuple("abca", 5));
+        trie.add(new Tuple("abcz", 5));
+        Iterable<String> words = trie.wordsWithPrefix("");
+        Assert.assertFalse(words.iterator().hasNext());
+        words = trie.wordsWithPrefix("a");
+        int i = 0;
         for(String s : words){
-            System.out.println(s);
+            if(i > expected[0].length - 1){
+                Assert.fail();
+            }
+            Assert.assertEquals(s, expected[0][i]);
+            i++;
         }
+        i = 0;
+        words = trie.wordsWithPrefix("abcd");
+        for(String s : words){
+            if(i > expected[1].length - 1){
+                Assert.fail();
+            }
+            Assert.assertEquals(s, expected[1][i]);
+            i++;
+        }
+        
     }
     
     
