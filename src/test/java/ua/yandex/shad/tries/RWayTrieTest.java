@@ -70,16 +70,18 @@ public class RWayTrieTest {
     public void testWordsWithPrefix(){
         RWayTrie trie = new RWayTrie();
         String[][] expected = {
-            {"abca", "abcde", "abcdef", "abcz"},
-            {"abcde", "abcdef"}
+            {"abca", "abcab", "abcd", "abcf", "abcfb"},
+            {"abca", "abcab"},
+            {"abcf", "abcfb"}
         };
-        trie.add(new Tuple("abcde", 6));
-        trie.add(new Tuple("abcdef", 6));
-        trie.add(new Tuple("abca", 5));
-        trie.add(new Tuple("abcz", 5));
+        trie.add(new Tuple("abcd", 4));
+        trie.add(new Tuple("abca", 4));
+        trie.add(new Tuple("abcf", 4));
+        trie.add(new Tuple("abcab", 5));
+        trie.add(new Tuple("abcfb", 5));
         Iterable<String> words = trie.wordsWithPrefix("");
         Assert.assertFalse(words.iterator().hasNext());
-        words = trie.wordsWithPrefix("a");
+        words = trie.wordsWithPrefix("abc");
         int i = 0;
         for(String s : words){
             if(i > expected[0].length - 1){
@@ -89,12 +91,21 @@ public class RWayTrieTest {
             i++;
         }
         i = 0;
-        words = trie.wordsWithPrefix("abcd");
+        words = trie.wordsWithPrefix("abca");
         for(String s : words){
             if(i > expected[1].length - 1){
                 Assert.fail();
             }
             Assert.assertEquals(s, expected[1][i]);
+            i++;
+        }
+        i = 0;
+        words = trie.wordsWithPrefix("abcf");
+        for(String s : words){
+            if(i > expected[2].length - 1){
+                Assert.fail();
+            }
+            Assert.assertEquals(s, expected[2][i]);
             i++;
         }
         
