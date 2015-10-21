@@ -4,7 +4,7 @@ import ua.yandex.shad.collections.MyArrayList;
 
 public class RWayTrie implements Trie {
     
-    public static int R = 26;
+    public final static int R = 26;
     
     private Node[] startNodes;
     
@@ -12,9 +12,11 @@ public class RWayTrie implements Trie {
     
     public static class Node {
         
-        public boolean val;
-        public char c;
-        public Node left, middle, right;
+        private boolean val;
+        private char c;
+        private Node left;
+        private Node middle;
+        private Node right;
         
         public Node(){
             
@@ -22,13 +24,75 @@ public class RWayTrie implements Trie {
             left = middle = right = null;
             
         }
-        
-        public Node(char c){
-            
+
+        /**
+         * @return the val
+         */
+        public boolean isVal() {
+            return val;
+        }
+
+        /**
+         * @param val the val to set
+         */
+        public void setVal(boolean val) {
+            this.val = val;
+        }
+
+        /**
+         * @return the c
+         */
+        public char getC() {
+            return c;
+        }
+
+        /**
+         * @param c the c to set
+         */
+        public void setC(char c) {
             this.c = c;
-            val = false;
-            left = middle = right = null;
-            
+        }
+
+        /**
+         * @return the left
+         */
+        public Node getLeft() {
+            return left;
+        }
+
+        /**
+         * @param left the left to set
+         */
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        /**
+         * @return the middle
+         */
+        public Node getMiddle() {
+            return middle;
+        }
+
+        /**
+         * @param middle the middle to set
+         */
+        public void setMiddle(Node middle) {
+            this.middle = middle;
+        }
+
+        /**
+         * @return the right
+         */
+        public Node getRight() {
+            return right;
+        }
+
+        /**
+         * @param right the right to set
+         */
+        public void setRight(Node right) {
+            this.right = right;
         }
         
     }
@@ -43,21 +107,22 @@ public class RWayTrie implements Trie {
     private Node add(Node x, String s, int k){
         
         if(x == null){
-            x = new Node(s.charAt(k));
+            x = new Node();
+            x.setC(s.charAt(k));
         }
-        if(s.charAt(k) < x.c){
-            x.left = add(x.left, s, k);
+        if(s.charAt(k) < x.getC()){
+            x.setLeft(add(x.getLeft(), s, k));
         }
-        else if(s.charAt(k) > x.c){
-            x.right = add(x.right, s, k);
+        else if(s.charAt(k) > x.getC()){
+            x.setRight(add(x.getRight(), s, k));
         }
         else if(k < s.length() - 1){
-            x.middle = add(x.middle, s, k + 1);
+            x.setMiddle(add(x.getMiddle(), s, k + 1));
         }
         else{
-            if(!x.val){
+            if(!x.isVal()){
                 size++;
-                x.val = true;
+                x.setVal(true);
             }
             
         }
@@ -79,17 +144,17 @@ public class RWayTrie implements Trie {
         
         if(x == null)
             return false;
-        if(s.charAt(k) > x.c){
-            return contains(x.right, s, k);
+        if(s.charAt(k) > x.getC()){
+            return contains(x.getRight(), s, k);
         }
-        else if(s.charAt(k) < x.c){
-            return contains(x.left, s, k);
+        else if(s.charAt(k) < x.getC()){
+            return contains(x.getLeft(), s, k);
         }
         else if(s.length() - 1 > k){
-            return contains(x.middle, s, k + 1);
+            return contains(x.getMiddle(), s, k + 1);
         }
         else{
-            return x.val;
+            return x.isVal();
         }
         
     }
@@ -107,23 +172,23 @@ public class RWayTrie implements Trie {
         
         if(x == null)
             return x;
-        if(s.charAt(k) > x.c){
-            x.right = delete(x.right, s, k);
+        if(s.charAt(k) > x.getC()){
+            x.setRight(delete(x.getRight(), s, k));
         }
-        else if(s.charAt(k) < x.c){
-            x.left = delete(x.left, s, k);
+        else if(s.charAt(k) < x.getC()){
+            x.setLeft(delete(x.getLeft(), s, k));
         }
         else if(s.length() - 1 > k){
-            x.middle = delete(x.middle, s, k + 1);
+            x.setMiddle(delete(x.getMiddle(), s, k + 1));
         }
         else{
-            if(x.val) {
-                x.val = false;
+            if(x.isVal()) {
+                x.setVal(false);
                 size--;
             }
-            if(x.left == null
-                    && x.right == null
-                    && x.middle == null){
+            if(x.getLeft() == null
+                    && x.getRight() == null
+                    && x.getMiddle() == null){
                 x = null;
             }
         }
@@ -148,12 +213,12 @@ public class RWayTrie implements Trie {
         
         if(x == null)
             return;
-        findWords(x.left, s, arr);
-        if(x.val){
-            arr.add(s + x.c);
+        findWords(x.getLeft(), s, arr);
+        if(x.isVal()){
+            arr.add(s + x.getC());
         }
-        findWords(x.middle, s + x.c, arr);
-        findWords(x.right, s, arr);
+        findWords(x.getMiddle(), s + x.getC(), arr);
+        findWords(x.getRight(), s, arr);
         
     }
 
@@ -179,26 +244,26 @@ public class RWayTrie implements Trie {
         if(x == null)
             return;
         if(k < prefix.length()){
-            if(prefix.charAt(k) < x.c){
-                this.findWordsWithPrefix(x.left, s, prefix, k, arr);
+            if(prefix.charAt(k) < x.getC()){
+                this.findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
             }
-            else if(prefix.charAt(k) > x.c){
-                this.findWordsWithPrefix(x.right, s, prefix, k, arr);
+            else if(prefix.charAt(k) > x.getC()){
+                this.findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
             }
             else {
-                if(k == prefix.length() - 1 && x.val){
+                if(k == prefix.length() - 1 && x.isVal()){
                     arr.add(prefix);
                 }
-                this.findWordsWithPrefix(x.middle, s + x.c, prefix, k + 1, arr);
+                this.findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
             }      
         }
         else{
-            findWordsWithPrefix(x.left, s, prefix, k, arr);
-            if(x.val){
-                arr.add(s + x.c);
+            findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
+            if(x.isVal()){
+                arr.add(s + x.getC());
             }
-            findWordsWithPrefix(x.middle, s + x.c, prefix, k + 1, arr);
-            findWordsWithPrefix(x.right, s, prefix, k, arr);
+            findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
+            findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
         }
         
     }

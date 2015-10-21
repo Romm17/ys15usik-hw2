@@ -15,9 +15,9 @@ import ua.yandex.shad.collections.MyArrayList;
  * @author romm
  */
 public class RWayTrieTest {
-    
+
     @Test
-    public void testAdd(){
+    public void testAdd() {
         RWayTrie trie = new RWayTrie();
         trie.add(new Tuple("abcde", 5));
         trie.add(new Tuple("abcdef", 6));
@@ -28,15 +28,15 @@ public class RWayTrieTest {
         Assert.assertTrue(trie.contains("abca"));
         Assert.assertTrue(trie.contains("abcz"));
     }
-    
+
     @Test
-    public void testDelete(){
+    public void testDelete() {
         RWayTrie trie = new RWayTrie();
         trie.add(new Tuple("abcde", 5));
         trie.add(new Tuple("abcdef", 6));
         trie.add(new Tuple("abca", 4));
         trie.add(new Tuple("abcz", 4));
-        trie.delete("abcd");
+        trie.delete("abc");
         trie.delete("abca");
         trie.delete("abcz");
         trie.delete("abcde");
@@ -45,9 +45,9 @@ public class RWayTrieTest {
         Assert.assertFalse(trie.contains("abcz"));
         Assert.assertFalse(trie.contains("abcde"));
     }
-    
+
     @Test
-    public void testWords(){
+    public void testWords() {
         RWayTrie trie = new RWayTrie();
         MyArrayList<String> expected = new MyArrayList();
         expected.add("abca");
@@ -61,14 +61,15 @@ public class RWayTrieTest {
         Iterable<String> words = trie.words();
         Iterator<String> expect = expected.iterator();
         Iterator<String> actual = words.iterator();
-        while(expect.hasNext() && actual.hasNext()){
+        while (expect.hasNext() && actual.hasNext()) {
             Assert.assertTrue(expect.next().equals(actual.next()));
         }
         Assert.assertFalse(actual.hasNext());
         Assert.assertFalse(expect.hasNext());
     }
+
     @Test
-    public void testWordsWithPrefix(){
+    public void testWordsWithPrefix() {
         RWayTrie trie = new RWayTrie();
         String[][] expected = {
             {"abca", "abcab", "abcd", "abcf", "abcfb"},
@@ -84,8 +85,8 @@ public class RWayTrieTest {
         Assert.assertFalse(words.iterator().hasNext());
         words = trie.wordsWithPrefix("abc");
         int i = 0;
-        for(String s : words){
-            if(i > expected[0].length - 1){
+        for (String s : words) {
+            if (i > expected[0].length - 1) {
                 Assert.fail();
             }
             Assert.assertEquals(s, expected[0][i]);
@@ -93,8 +94,8 @@ public class RWayTrieTest {
         }
         i = 0;
         words = trie.wordsWithPrefix("a");
-        for(String s : words){
-            if(i > expected[0].length - 1){
+        for (String s : words) {
+            if (i > expected[0].length - 1) {
                 Assert.fail();
             }
             Assert.assertEquals(s, expected[0][i]);
@@ -102,8 +103,8 @@ public class RWayTrieTest {
         }
         i = 0;
         words = trie.wordsWithPrefix("abca");
-        for(String s : words){
-            if(i > expected[1].length - 1){
+        for (String s : words) {
+            if (i > expected[1].length - 1) {
                 Assert.fail();
             }
             Assert.assertEquals(s, expected[1][i]);
@@ -111,15 +112,14 @@ public class RWayTrieTest {
         }
         i = 0;
         words = trie.wordsWithPrefix("abcf");
-        for(String s : words){
-            if(i > expected[2].length - 1){
+        for (String s : words) {
+            if (i > expected[2].length - 1) {
                 Assert.fail();
             }
             Assert.assertEquals(s, expected[2][i]);
             i++;
         }
-        
+
     }
-    
-    
+
 }

@@ -112,6 +112,7 @@ public class PrefixMatchesTest {
                 i++;
             }
         }
+        Assert.assertNull(pm.wordsWithPrefix("abc", 0));
     }
     
     @Test
