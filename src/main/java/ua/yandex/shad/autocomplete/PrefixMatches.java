@@ -5,6 +5,8 @@
  */
 package ua.yandex.shad.autocomplete;
 
+import ua.yandex.shad.collections.MyArrayList;
+import ua.yandex.shad.tries.RWayTrie;
 import ua.yandex.shad.tries.Tuple;
 import ua.yandex.shad.tries.Trie;
 
@@ -15,19 +17,22 @@ import ua.yandex.shad.tries.Trie;
 public class PrefixMatches {
 
     private Trie trie;
+    
+    {
+        trie = new RWayTrie();
+    }
 
     public int load(String... strings) {
-        int cou = 0;
+        int previousSize = trie.size();
         for(String s : strings){
             String[] words = s.split(" ");
             for(String word : words){
                 if(word.length() > 2){
                     trie.add(new Tuple(word, word.length()));
-                    cou++;
                 }
             }
         }
-        return cou;
+        return trie.size() - previousSize;
     }
 
     public boolean contains(String word) {
@@ -39,14 +44,27 @@ public class PrefixMatches {
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        return trie.wordsWithPrefix(pref);
+        return this.wordsWithPrefix(pref, 3);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Iterable<String> words;
+        if(pref.length() >= 2 && k >= 1){
+            words = trie.wordsWithPrefix(pref);
+        }
+        else{
+            return null;
+        }
+        MyArrayList<String> wordsLessThanK = new MyArrayList();
+        for(String s : words){
+            if(s.length() <= k + 2){
+                wordsLessThanK.add(s);
+            }
+        }
+        return wordsLessThanK;
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.size();
     }
 }

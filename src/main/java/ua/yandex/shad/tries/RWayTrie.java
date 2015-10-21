@@ -1,6 +1,6 @@
 package ua.yandex.shad.tries;
 
-import java.util.ArrayList;
+import ua.yandex.shad.collections.MyArrayList;
 
 public class RWayTrie implements Trie {
     
@@ -55,8 +55,11 @@ public class RWayTrie implements Trie {
             x.middle = add(x.middle, s, k + 1);
         }
         else{
-            x.val = true;
-            size++;
+            if(!x.val){
+                size++;
+                x.val = true;
+            }
+            
         }
         return x;
         
@@ -143,7 +146,7 @@ public class RWayTrie implements Trie {
         
     }
     
-    private void findWords(Node x, String s, ArrayList<String> arr){
+    private void findWords(Node x, String s, MyArrayList<String> arr){
         
         if(x == null)
             return;
@@ -159,7 +162,8 @@ public class RWayTrie implements Trie {
     @Override
     public Iterable<String> words() {
         
-        ArrayList<String> words = new ArrayList();
+        MyArrayList<String> words;
+        words = new MyArrayList();
         for(int i = 0; i < R; i++){
             for(int j = 0; j < R; j++){
                 Node x = this.startNodes[R * i + j];
@@ -171,7 +175,7 @@ public class RWayTrie implements Trie {
     }
     
     private void findWordsWithPrefix(Node x, String s, String prefix, 
-            int k, ArrayList<String> arr
+            int k, MyArrayList<String> arr
             ) {
         
         if(x == null)
@@ -205,17 +209,16 @@ public class RWayTrie implements Trie {
     public Iterable<String> wordsWithPrefix(String s) {
         
         if(s.length() == 0){
-            return new ArrayList();
+            return new MyArrayList();
         }
-        ArrayList<String> words = new ArrayList();
+        MyArrayList<String> words = new MyArrayList();
         Node x;
         if(s.length() == 1){
             for(int i = 0; i < R; i++){
                 x = this.startNodes[R * (s.charAt(0) - 'a') 
                     + i];
                 String prefix = "" + s.charAt(0) + (char)('a' + i);
-                findWordsWithPrefix(x, prefix,
-                        s, 2, words);
+                findWordsWithPrefix(x, prefix, s, 2, words);
             }
         }
         else {

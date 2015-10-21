@@ -63,7 +63,7 @@ public class RWayTrieTest {
         trie.add(new Tuple("laloa", 5));
         trie.add(new Tuple("lolok", 5));
         trie.add(new Tuple("loloa", 5));
-        Iterable<String> words = trie.wordsWithPrefix("");
+        Iterable<String> words = trie.wordsWithPrefix("lo");
         for(String s : words){
             System.out.println(s);
         }
