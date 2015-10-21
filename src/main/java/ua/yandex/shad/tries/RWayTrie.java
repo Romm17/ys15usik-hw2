@@ -117,17 +117,15 @@ public class RWayTrie implements Trie {
             x.middle = delete(x.middle, s, k + 1);
         }
         else{
-            if(!x.val)
-                return x;
+            if(x.val) {
+                x.val = false;
+                size--;
+            }
             if(x.left == null
                     && x.right == null
                     && x.middle == null){
                 x = null;
             }
-            else{
-                x.val = false;
-            }
-            size--;
         }
         return x;
         
