@@ -36,13 +36,14 @@ public class RWayTrieTest {
         trie.add(new Tuple("abcdef", 6));
         trie.add(new Tuple("abca", 4));
         trie.add(new Tuple("abcz", 4));
+        trie.delete("abcd");
         trie.delete("abca");
         trie.delete("abcz");
-        trie.delete("abcdef");
+        trie.delete("abcde");
         Assert.assertEquals(trie.size(), 1);
         Assert.assertFalse(trie.contains("abca"));
         Assert.assertFalse(trie.contains("abcz"));
-        Assert.assertFalse(trie.contains("abcdef"));
+        Assert.assertFalse(trie.contains("abcde"));
     }
     
     @Test
@@ -83,6 +84,15 @@ public class RWayTrieTest {
         Assert.assertFalse(words.iterator().hasNext());
         words = trie.wordsWithPrefix("abc");
         int i = 0;
+        for(String s : words){
+            if(i > expected[0].length - 1){
+                Assert.fail();
+            }
+            Assert.assertEquals(s, expected[0][i]);
+            i++;
+        }
+        i = 0;
+        words = trie.wordsWithPrefix("a");
         for(String s : words){
             if(i > expected[0].length - 1){
                 Assert.fail();
