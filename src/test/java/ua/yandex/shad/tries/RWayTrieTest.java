@@ -68,15 +68,15 @@ public class RWayTrieTest {
         trie.delete("abcdefa");
         trie.delete("abcdef");
         trie.delete("abcdea");
+        trie.delete("abcde");
+        trie.delete("abcdez");
         trie.delete("abcda");
         trie.delete("abcd");
         trie.delete("abcdz");
-        trie.delete("abcdd");
         trie.delete("abcz");
-        trie.delete("abcde");
-        trie.delete("abcd");
         trie.delete("abc");
-        Assert.assertEquals(2, trie.size());
+        trie.delete("abca");
+        Assert.assertEquals(0, trie.size());
     }
 
     @Test
