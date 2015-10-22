@@ -54,7 +54,7 @@ public class PrefixMatches {
         if (pref.length() >= 2 && k >= 1) {
             words = trie.wordsWithPrefix(pref);
         }
-        else{
+        else {
             return null;
         }
         MyArrayList<String> wordsLessThanK = new MyArrayList();

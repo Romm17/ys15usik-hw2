@@ -88,7 +88,7 @@ public class MyArrayList<E> implements Iterable<E> {
         if (elementData == EMPTY_DATA) {
             elementData = (E[]) new Object[DEFAULT_CAPACITY];
         }
-        else{
+        else {
             if (elementData.length - size < 1) {
                 elementData = Arrays.copyOf(elementData, elementData.length 
                         + (elementData.length >> 1));

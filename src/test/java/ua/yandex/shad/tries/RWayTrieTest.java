@@ -72,7 +72,10 @@ public class RWayTrieTest {
         trie.delete("abcdz");
         trie.delete("abcz");
         trie.delete("abca");
-        Assert.assertEquals(3, trie.size());
+        trie.delete("abcde");
+        trie.delete("abcd");
+        trie.delete("abc");
+        Assert.assertEquals(0, trie.size());
     }
 
     @Test

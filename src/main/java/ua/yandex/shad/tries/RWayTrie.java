@@ -7,7 +7,7 @@ import ua.yandex.shad.collections.MyArrayList;
  */
 public class RWayTrie implements Trie {
     
-    public final static int R = 26;
+    private final static int R = 26;
     
     private final Node[] startNodes;
     
@@ -120,7 +120,7 @@ public class RWayTrie implements Trie {
         else if (k < s.length() - 1) {
             current.setMiddle(add(current.getMiddle(), s, k + 1));
         }
-        else{
+        else {
             if (!current.isVal()) {
                 size++;
                 current.setVal(true);
@@ -150,7 +150,7 @@ public class RWayTrie implements Trie {
         else if (s.length() - 1 > k) {
             return contains(x.getMiddle(), s, k + 1);
         }
-        else{
+        else {
             return x.isVal();
         }
     }
@@ -177,7 +177,7 @@ public class RWayTrie implements Trie {
         else if (s.length() - 1 > k) {
             current.setMiddle(delete(current.getMiddle(), s, k + 1));
         }
-        else{
+        else {
             if (current.isVal()) {
                 current.setVal(false);
                 size--;
@@ -239,7 +239,7 @@ public class RWayTrie implements Trie {
             else if (prefix.charAt(k) > x.getC()) {
                 this.findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
             }
-            else{
+            else {
                 if (k == prefix.length() - 1 && x.isVal()) {
                     arr.add(prefix);
                 }
@@ -247,7 +247,7 @@ public class RWayTrie implements Trie {
                         prefix, k + 1, arr);
             }      
         }
-        else{
+        else {
             findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
             if (x.isVal()) {
                 arr.add(s + x.getC());
@@ -273,7 +273,7 @@ public class RWayTrie implements Trie {
                 findWordsWithPrefix(x, prefix, s, 2, words);
             }
         }
-        else{
+        else {
             x = this.startNodes[R * (s.charAt(0) - 'a') 
                     + (s.charAt(1) - 'a')];
             String prefix = "" + s.charAt(0) + s.charAt(1);
