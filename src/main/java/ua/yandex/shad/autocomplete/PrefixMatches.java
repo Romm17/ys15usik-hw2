@@ -26,10 +26,10 @@ public class PrefixMatches {
 
     public int load(String... strings) {
         int previousSize = trie.size();
-        for(String s : strings) {
+        for (String s : strings) {
             String[] words = s.split(" ");
-            for(String word : words) {
-                if(word.length() > 2) {
+            for (String word : words) {
+                if (word.length() > 2) {
                     trie.add(new Tuple(word, word.length()));
                 }
             }
@@ -51,15 +51,15 @@ public class PrefixMatches {
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
         Iterable<String> words;
-        if(pref.length() >= 2 && k >= 1) {
+        if (pref.length() >= 2 && k >= 1) {
             words = trie.wordsWithPrefix(pref);
         }
         else{
             return null;
         }
         MyArrayList<String> wordsLessThanK = new MyArrayList();
-        for(String s : words) {
-            if(s.length() <= k + 2) {
+        for (String s : words) {
+            if (s.length() <= k + 2) {
                 wordsLessThanK.add(s);
             }
         }

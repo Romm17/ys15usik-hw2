@@ -85,11 +85,11 @@ public class MyArrayList<E> implements Iterable<E> {
      */
 
     public boolean add(E o) {
-        if(elementData == EMPTY_DATA) {
+        if (elementData == EMPTY_DATA) {
             elementData = (E[]) new Object[DEFAULT_CAPACITY];
         }
         else{
-            if(elementData.length - size < 1) {
+            if (elementData.length - size < 1) {
                 elementData = Arrays.copyOf(elementData, elementData.length 
                         + (elementData.length >> 1));
             }
