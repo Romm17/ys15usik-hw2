@@ -15,6 +15,8 @@ import ua.yandex.shad.tries.Trie;
  * @author andrii
  */
 public class PrefixMatches {
+    
+    private final int K = 3;
 
     private final Trie trie;
     
@@ -44,7 +46,7 @@ public class PrefixMatches {
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        return this.wordsWithPrefix(pref, 3);
+        return this.wordsWithPrefix(pref, K);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
