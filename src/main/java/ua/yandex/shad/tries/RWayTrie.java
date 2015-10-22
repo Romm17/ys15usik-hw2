@@ -2,11 +2,14 @@ package ua.yandex.shad.tries;
 
 import ua.yandex.shad.collections.MyArrayList;
 
+/**
+ * @author Romam Usik
+ */
 public class RWayTrie implements Trie {
     
     public final static int R = 26;
     
-    private Node[] startNodes;
+    private final Node[] startNodes;
     
     private int size;
     
@@ -18,11 +21,9 @@ public class RWayTrie implements Trie {
         private Node middle;
         private Node right;
         
-        public Node(){
-            
+        public Node() {
             val = false;
-            left = middle = right = null;
-            
+            left = middle = right = null; 
         }
 
         /**
@@ -97,88 +98,77 @@ public class RWayTrie implements Trie {
         
     }
     
-    public RWayTrie(){
-        
+    public RWayTrie() {
         this.startNodes = new Node[R * R];
         size = 0;
-     
     }
     
-    private Node add(Node x, String s, int k){
-        
-        if(x == null){
+    private Node add(Node x, String s, int k) {
+        if(x == null) {
             x = new Node();
             x.setC(s.charAt(k));
         }
-        if(s.charAt(k) < x.getC()){
+        if(s.charAt(k) < x.getC()) {
             x.setLeft(add(x.getLeft(), s, k));
         }
-        else if(s.charAt(k) > x.getC()){
+        else if(s.charAt(k) > x.getC()) {
             x.setRight(add(x.getRight(), s, k));
         }
-        else if(k < s.length() - 1){
+        else if(k < s.length() - 1) {
             x.setMiddle(add(x.getMiddle(), s, k + 1));
         }
         else{
-            if(!x.isVal()){
+            if(!x.isVal()) {
                 size++;
                 x.setVal(true);
-            }
-            
+            }  
         }
         return x;
-        
     }
 
     @Override
     public void add(Tuple t) {
-        
         Node x = this.startNodes[R * (t.term.charAt(0) - 'a') 
                 + (t.term.charAt(1) - 'a')];
         this.startNodes[R * (t.term.charAt(0) - 'a') 
                 + (t.term.charAt(1) - 'a')] = add(x, t.term, 2);
-        
     }
     
-    private boolean contains(Node x, String s, int k){
-        
+    private boolean contains(Node x, String s, int k) {
         if(x == null)
             return false;
-        if(s.charAt(k) > x.getC()){
+        if(s.charAt(k) > x.getC()) {
             return contains(x.getRight(), s, k);
         }
-        else if(s.charAt(k) < x.getC()){
+        else if(s.charAt(k) < x.getC()) {
             return contains(x.getLeft(), s, k);
         }
-        else if(s.length() - 1 > k){
+        else if(s.length() - 1 > k) {
             return contains(x.getMiddle(), s, k + 1);
         }
         else{
             return x.isVal();
         }
-        
     }
 
     @Override
     public boolean contains(String word) {
-        
         Node x = this.startNodes[R * (word.charAt(0) - 'a') 
                 + (word.charAt(1) - 'a')];
         return contains(x, word, 2);
         
     }
     
-    private Node delete(Node x, String s, int k){
-        
+    private Node delete(Node x, String s, int k) {
         if(x == null)
             return x;
-        if(s.charAt(k) > x.getC()){
+        if(s.charAt(k) > x.getC()) {
             x.setRight(delete(x.getRight(), s, k));
         }
-        else if(s.charAt(k) < x.getC()){
+        else if(s.charAt(k) < x.getC()) {
             x.setLeft(delete(x.getLeft(), s, k));
         }
-        else if(s.length() - 1 > k){
+        else if(s.length() - 1 > k) {
             x.setMiddle(delete(x.getMiddle(), s, k + 1));
         }
         else{
@@ -188,70 +178,61 @@ public class RWayTrie implements Trie {
             }
             if(x.getLeft() == null
                     && x.getRight() == null
-                    && x.getMiddle() == null){
+                    && x.getMiddle() == null) {
                 x = null;
             }
         }
-        return x;
-        
+        return x;   
     }
-
+    
     @Override
-    public boolean delete(String word) {
-        
+    public boolean delete(String word) { 
         int sizeWas = size;
         Node x = this.startNodes[R * (word.charAt(0) - 'a') 
                 + (word.charAt(1) - 'a')];
         this.startNodes[R * (word.charAt(0) - 'a') 
                 + (word.charAt(1) - 'a')] = delete(x, word, 2);
         int sizeNow = size;
-        return sizeWas - sizeNow == 1;
-        
+        return sizeWas - sizeNow == 1;  
     }
     
-    private void findWords(Node x, String s, MyArrayList<String> arr){
-        
+    private void findWords(Node x, String s, MyArrayList<String> arr) { 
         if(x == null)
             return;
         findWords(x.getLeft(), s, arr);
-        if(x.isVal()){
+        if(x.isVal()) {
             arr.add(s + x.getC());
         }
         findWords(x.getMiddle(), s + x.getC(), arr);
-        findWords(x.getRight(), s, arr);
-        
+        findWords(x.getRight(), s, arr);  
     }
 
     @Override
-    public Iterable<String> words() {
-        
+    public Iterable<String> words() {  
         MyArrayList<String> words;
         words = new MyArrayList();
-        for(int i = 0; i < R; i++){
-            for(int j = 0; j < R; j++){
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < R; j++) {
                 Node x = this.startNodes[R * i + j];
                 findWords(x, "" + (char)('a' + i) + (char)('a' + j), words);
             }
         }
-        return words;
-        
+        return words;    
     }
     
     private void findWordsWithPrefix(Node x, String s, String prefix, 
-            int k, MyArrayList<String> arr
-            ) {
-        
+            int k, MyArrayList<String> arr) {   
         if(x == null)
             return;
-        if(k < prefix.length()){
-            if(prefix.charAt(k) < x.getC()){
+        if(k < prefix.length()) {
+            if(prefix.charAt(k) < x.getC()) {
                 this.findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
             }
-            else if(prefix.charAt(k) > x.getC()){
+            else if(prefix.charAt(k) > x.getC()) {
                 this.findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
             }
             else {
-                if(k == prefix.length() - 1 && x.isVal()){
+                if(k == prefix.length() - 1 && x.isVal()) {
                     arr.add(prefix);
                 }
                 this.findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
@@ -259,25 +240,23 @@ public class RWayTrie implements Trie {
         }
         else{
             findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
-            if(x.isVal()){
+            if(x.isVal()) {
                 arr.add(s + x.getC());
             }
             findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
             findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
-        }
-        
+        } 
     }
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
-        
-        if(s.length() == 0){
+        if(s.length() == 0) {
             return new MyArrayList();
         }
         MyArrayList<String> words = new MyArrayList();
         Node x;
-        if(s.length() == 1){
-            for(int i = 0; i < R; i++){
+        if(s.length() == 1) {
+            for(int i = 0; i < R; i++) {
                 x = this.startNodes[R * (s.charAt(0) - 'a') 
                     + i];
                 String prefix = "" + s.charAt(0) + (char)('a' + i);
@@ -290,15 +269,12 @@ public class RWayTrie implements Trie {
             String prefix = "" + s.charAt(0) + s.charAt(1);
             findWordsWithPrefix(x, prefix, s, 2, words);
         }
-        return words;
-        
+        return words;  
     }
 
     @Override
     public int size() {
-        
         return size; 
-        
     }
 
 }

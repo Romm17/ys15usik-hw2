@@ -16,7 +16,7 @@ import ua.yandex.shad.tries.Trie;
  */
 public class PrefixMatches {
 
-    private Trie trie;
+    private final Trie trie;
     
     {
         trie = new RWayTrie();

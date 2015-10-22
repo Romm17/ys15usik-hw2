@@ -45,6 +45,24 @@ public class RWayTrieTest {
         Assert.assertFalse(trie.contains("abcz"));
         Assert.assertFalse(trie.contains("abcde"));
     }
+    
+    @Test
+    public void testDeleteRemovingNode() {
+        RWayTrie trie = new RWayTrie();
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abcd", 4));
+        trie.add(new Tuple("abcde", 5));
+        trie.add(new Tuple("abcdef", 6));
+        trie.add(new Tuple("abca", 4));
+        trie.add(new Tuple("abcz", 4));
+        trie.delete("abcde");
+        trie.delete("abcdef");
+        trie.delete("abc");
+        trie.delete("abcd");
+        trie.delete("abcz");
+        trie.delete("abca");
+        Assert.assertEquals(0, trie.size());
+    }
 
     @Test
     public void testWords() {

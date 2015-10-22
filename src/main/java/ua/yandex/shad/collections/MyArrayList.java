@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- *
- * @author romm
+ * @author Romam Usik
+ * @param <E>
  */
-public class MyArrayList <E> implements Iterable<E> {
+public class MyArrayList<E> implements Iterable<E> {
     
     /**
      * Default capacity of array
@@ -37,7 +37,7 @@ public class MyArrayList <E> implements Iterable<E> {
     /**
      * Constructs an empty array with an initial capacity of ten.
      */
-    public MyArrayList(){
+    public MyArrayList() {
         elementData = (E[])EMPTY_DATA;
         size = 0;
     }
@@ -45,11 +45,11 @@ public class MyArrayList <E> implements Iterable<E> {
     /**
      * Represents an optimized version of Iterator<E>
      */
-    private class Itr implements Iterator<E>{
+    private class Itr implements Iterator<E> {
 
         private int curr;
 
-        private Itr(){
+        private Itr() {
             curr = -1;
         }
 
@@ -85,11 +85,11 @@ public class MyArrayList <E> implements Iterable<E> {
      */
 
     public boolean add(E o) {
-        if(elementData == EMPTY_DATA){
+        if(elementData == EMPTY_DATA) {
             elementData = (E[])new Object[DEFAULT_CAPACITY];
         }
         else{
-            if(elementData.length - size < 1){
+            if(elementData.length - size < 1) {
                 elementData = Arrays.copyOf(elementData, elementData.length + (elementData.length >> 1));
             }
         }
@@ -97,10 +97,8 @@ public class MyArrayList <E> implements Iterable<E> {
         return true;
     }
     
-    public int size(){
-        
+    public int size() {
         return this.size;
-        
     }
     
 }
