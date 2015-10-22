@@ -16,7 +16,7 @@ import ua.yandex.shad.tries.Trie;
  */
 public class PrefixMatches {
     
-    private final int K = 3;
+    private static final int K = 3;
 
     private final Trie trie;
     
