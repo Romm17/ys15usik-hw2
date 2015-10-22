@@ -8,6 +8,7 @@ package ua.yandex.shad.tries;
 import java.util.Iterator;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Ignore;
 import ua.yandex.shad.collections.MyArrayList;
 
 /**
@@ -50,38 +51,37 @@ public class RWayTrieTest {
     public void testDeleteRemovingNode() {
         RWayTrie trie = new RWayTrie();
         trie.add(new Tuple("abc", 3));
-        trie.add(new Tuple("abcd", 4));
-        trie.add(new Tuple("abca", 4));
-        trie.add(new Tuple("abcz", 4));
-        trie.add(new Tuple("abcde", 5));
-        trie.add(new Tuple("abcda", 5));
-        trie.add(new Tuple("abcdz", 5));
-        trie.add(new Tuple("abcdef", 6));
-        trie.add(new Tuple("abcdea", 6));
-        trie.add(new Tuple("abcdez", 6));
-        trie.add(new Tuple("abcdefg", 7));
-        trie.add(new Tuple("abcdefa", 7));
-        trie.add(new Tuple("abcdefz", 7));
-        trie.add(new Tuple("abcdefgh", 8));
-        trie.add(new Tuple("abcdefgz", 7));
-        trie.delete("abcdefgh");
-        trie.delete("abcdefg");
-        trie.delete("abcdefgz");
-        trie.delete("abcdefg");
-        trie.delete("abcdefz");
-        trie.delete("abcdef");
-        trie.delete("abcdefa");
-        trie.delete("abcdef");
-        trie.delete("abcdea");
-        trie.delete("abcde");
-        trie.delete("abcdez");
-        trie.delete("abcda");
-        trie.delete("abcd");
-        trie.delete("abcdz");
-        trie.delete("abcz");
         trie.delete("abc");
-        trie.delete("abca");
-        Assert.assertEquals(0, trie.size());
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abcd", 4));
+        trie.delete("abc");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("aba", 3));
+        trie.delete("abcd");
+        trie.delete("abc");
+        trie.delete("aba");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abcd", 4));
+        trie.add(new Tuple("abd", 3));
+        trie.delete("abcd");
+        trie.delete("abc");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abcd", 4));
+        trie.add(new Tuple("aba", 3));
+        trie.delete("abcd");
+        trie.delete("abc");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abcd", 4));
+        trie.delete("aba");
+        trie.delete("abc");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("aba", 3));
+        trie.delete("abd");
+        trie.delete("abc");
+        trie.add(new Tuple("abc", 3));
+        trie.add(new Tuple("abd", 3));
+        trie.delete("abc");
+        Assert.assertEquals(3, trie.size());
     }
 
     @Test

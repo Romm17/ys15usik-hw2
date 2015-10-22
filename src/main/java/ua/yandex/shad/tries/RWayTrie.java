@@ -184,6 +184,10 @@ public class RWayTrie implements Trie {
                 current.setVal(false);
                 size--;
             }
+//            boolean a = current.getMiddle() != null;
+//            boolean b = current.getRight() != null;
+//            boolean c = current.getLeft() == null;
+//            System.out.println(c + " " + a + " " + b);
             if (current.getMiddle() == null
                     && current.getRight() == null
                     && current.getLeft() == null) {
