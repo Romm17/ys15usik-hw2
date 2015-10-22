@@ -64,18 +64,19 @@ public class RWayTrieTest {
         trie.add(new Tuple("abcdefz", 7));
         trie.delete("abcdefg");
         trie.delete("abcdefz");
+        trie.delete("abcdef");
         trie.delete("abcdefa");
         trie.delete("abcdef");
         trie.delete("abcdea");
-        trie.delete("abcdez");
         trie.delete("abcda");
+        trie.delete("abcd");
         trie.delete("abcdz");
+        trie.delete("abcdd");
         trie.delete("abcz");
-        trie.delete("abca");
         trie.delete("abcde");
         trie.delete("abcd");
         trie.delete("abc");
-        Assert.assertEquals(0, trie.size());
+        Assert.assertEquals(2, trie.size());
     }
 
     @Test
