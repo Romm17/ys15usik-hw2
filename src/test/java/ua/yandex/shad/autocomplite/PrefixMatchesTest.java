@@ -113,6 +113,8 @@ public class PrefixMatchesTest {
             }
         }
         Assert.assertNull(pm.wordsWithPrefix("abc", 0));
+        Assert.assertNull(pm.wordsWithPrefix("a", 10));
+        Assert.assertNull(pm.wordsWithPrefix("a", 0));
     }
     
     @Test

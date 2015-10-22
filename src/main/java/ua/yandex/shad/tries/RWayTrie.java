@@ -129,8 +129,8 @@ public class RWayTrie implements Trie {
         return current;
     }
     
-    private int findIndex(char i, char j){
-        return R * (i - 'a') + (j - 'a');
+    private int findIndex(char i, char j) {
+        return R * (i - 'a') + j - 'a';
     }
 
     @Override
