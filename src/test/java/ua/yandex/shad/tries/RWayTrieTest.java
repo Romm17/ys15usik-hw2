@@ -62,6 +62,11 @@ public class RWayTrieTest {
         trie.add(new Tuple("abcdefg", 7));
         trie.add(new Tuple("abcdefa", 7));
         trie.add(new Tuple("abcdefz", 7));
+        trie.add(new Tuple("abcdefgh", 8));
+        trie.add(new Tuple("abcdefgz", 7));
+        trie.delete("abcdefgh");
+        trie.delete("abcdefg");
+        trie.delete("abcdefgz");
         trie.delete("abcdefg");
         trie.delete("abcdefz");
         trie.delete("abcdef");
