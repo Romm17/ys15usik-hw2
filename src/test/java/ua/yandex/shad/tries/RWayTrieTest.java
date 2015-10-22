@@ -40,7 +40,7 @@ public class RWayTrieTest {
         trie.delete("abca");
         trie.delete("abcz");
         trie.delete("abcde");
-        Assert.assertEquals(trie.size(), 1);
+        Assert.assertEquals(1, trie.size());
         Assert.assertFalse(trie.contains("abca"));
         Assert.assertFalse(trie.contains("abcz"));
         Assert.assertFalse(trie.contains("abcde"));

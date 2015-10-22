@@ -36,10 +36,10 @@ public class RWayTrie implements Trie {
         }
 
         /**
-         * @param val the val to set
+         * @param valPar the val to set
          */
-        public void setVal(boolean val) {
-            this.val = val;
+        public void setVal(boolean valPar) {
+            this.val = valPar;
         }
 
         /**
@@ -50,10 +50,10 @@ public class RWayTrie implements Trie {
         }
 
         /**
-         * @param c the c to set
+         * @param cPar the c to set
          */
-        public void setC(char c) {
-            this.c = c;
+        public void setC(char cPar) {
+            this.c = cPar;
         }
 
         /**
@@ -64,10 +64,10 @@ public class RWayTrie implements Trie {
         }
 
         /**
-         * @param left the left to set
+         * @param leftPar the left to set
          */
-        public void setLeft(Node left) {
-            this.left = left;
+        public void setLeft(Node leftPar) {
+            this.left = leftPar;
         }
 
         /**
@@ -78,10 +78,10 @@ public class RWayTrie implements Trie {
         }
 
         /**
-         * @param middle the middle to set
+         * @param middlePar the middle to set
          */
-        public void setMiddle(Node middle) {
-            this.middle = middle;
+        public void setMiddle(Node middlePar) {
+            this.middle = middlePar;
         }
 
         /**
@@ -92,10 +92,10 @@ public class RWayTrie implements Trie {
         }
 
         /**
-         * @param right the right to set
+         * @param rightPar the right to set
          */
-        public void setRight(Node right) {
-            this.right = right;
+        public void setRight(Node rightPar) {
+            this.right = rightPar;
         }
         
     }
@@ -106,26 +106,27 @@ public class RWayTrie implements Trie {
     }
     
     private Node add(Node x, String s, int k) {
-        if(x == null){
-            x = new Node();
-            x.setC(s.charAt(k));
+        Node current = x;
+        if(x == null) {
+            current = new Node();
+            current.setC(s.charAt(k));
         }
-        if(s.charAt(k) < x.getC()){
-            x.setLeft(add(x.getLeft(), s, k));
+        if(s.charAt(k) < current.getC()) {
+            current.setLeft(add(current.getLeft(), s, k));
         }
-        else if(s.charAt(k) > x.getC()){
-            x.setRight(add(x.getRight(), s, k));
+        else if(s.charAt(k) > current.getC()) {
+            current.setRight(add(current.getRight(), s, k));
         }
-        else if(k < s.length() - 1){
-            x.setMiddle(add(x.getMiddle(), s, k + 1));
+        else if(k < s.length() - 1) {
+            current.setMiddle(add(current.getMiddle(), s, k + 1));
         }
         else{
-            if(!x.isVal()){
+            if(!current.isVal()) {
                 size++;
-                x.setVal(true);
+                current.setVal(true);
             }  
         }
-        return x;
+        return current;
     }
 
     @Override
@@ -140,13 +141,13 @@ public class RWayTrie implements Trie {
         if(x == null) {
             return false;
         }
-        if(s.charAt(k) > x.getC()){
+        if(s.charAt(k) > x.getC()) {
             return contains(x.getRight(), s, k);
         }
-        else if(s.charAt(k) < x.getC()){
+        else if(s.charAt(k) < x.getC()) {
             return contains(x.getLeft(), s, k);
         }
-        else if(s.length() - 1 > k){
+        else if(s.length() - 1 > k) {
             return contains(x.getMiddle(), s, k + 1);
         }
         else{
@@ -163,30 +164,31 @@ public class RWayTrie implements Trie {
     }
     
     private Node delete(Node x, String s, int k) {
-        if(x == null) {
-            return x;
+        Node current = x;
+        if(current == null) {
+            return current;
         }
-        if(s.charAt(k) > x.getC()){
-            x.setRight(delete(x.getRight(), s, k));
+        if(s.charAt(k) > current.getC()) {
+            current.setRight(delete(current.getRight(), s, k));
         }
-        else if(s.charAt(k) < x.getC()){
-            x.setLeft(delete(x.getLeft(), s, k));
+        else if(s.charAt(k) < current.getC()) {
+            current.setLeft(delete(current.getLeft(), s, k));
         }
-        else if(s.length() - 1 > k){
-            x.setMiddle(delete(x.getMiddle(), s, k + 1));
+        else if(s.length() - 1 > k) {
+            current.setMiddle(delete(current.getMiddle(), s, k + 1));
         }
         else{
-            if(x.isVal()){
-                x.setVal(false);
+            if(current.isVal()) {
+                current.setVal(false);
                 size--;
             }
-            if(x.getLeft() == null
-                    && x.getRight() == null
-                    && x.getMiddle() == null){
-                x = null;
+            if(current.getLeft() == null
+                    && current.getRight() == null
+                    && current.getMiddle() == null) {
+                current = null;
             }
         }
-        return x;   
+        return current;   
     }
     
     @Override
@@ -205,7 +207,7 @@ public class RWayTrie implements Trie {
             return;
         }
         findWords(x.getLeft(), s, arr);
-        if(x.isVal()){
+        if(x.isVal()) {
             arr.add(s + x.getC());
         }
         findWords(x.getMiddle(), s + x.getC(), arr);
@@ -216,8 +218,8 @@ public class RWayTrie implements Trie {
     public Iterable<String> words() {  
         MyArrayList<String> words;
         words = new MyArrayList();
-        for(int i = 0; i < R; i++){
-            for(int j = 0; j < R; j++){
+        for(int i = 0; i < R; i++) {
+            for(int j = 0; j < R; j++) {
                 Node x = this.startNodes[R * i + j];
                 findWords(x, "" + (char)('a' + i) + (char)('a' + j), words);
             }
@@ -230,15 +232,15 @@ public class RWayTrie implements Trie {
         if(x == null) {
             return;
         }
-        if(k < prefix.length()){
-            if(prefix.charAt(k) < x.getC()){
+        if(k < prefix.length()) {
+            if(prefix.charAt(k) < x.getC()) {
                 this.findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
             }
-            else if(prefix.charAt(k) > x.getC()){
+            else if(prefix.charAt(k) > x.getC()) {
                 this.findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
             }
             else{
-                if(k == prefix.length() - 1 && x.isVal()){
+                if(k == prefix.length() - 1 && x.isVal()) {
                     arr.add(prefix);
                 }
                 this.findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
@@ -246,7 +248,7 @@ public class RWayTrie implements Trie {
         }
         else{
             findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
-            if(x.isVal()){
+            if(x.isVal()) {
                 arr.add(s + x.getC());
             }
             findWordsWithPrefix(x.getMiddle(), s + x.getC(), prefix, k + 1, arr);
@@ -256,13 +258,13 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
-        if(s.length() == 0){
+        if(s.length() == 0) {
             return new MyArrayList();
         }
         MyArrayList<String> words = new MyArrayList();
         Node x;
-        if(s.length() == 1){
-            for(int i = 0; i < R; i++){
+        if(s.length() == 1) {
+            for(int i = 0; i < R; i++) {
                 x = this.startNodes[R * (s.charAt(0) - 'a') 
                     + i];
                 String prefix = "" + s.charAt(0) + (char)('a' + i);
