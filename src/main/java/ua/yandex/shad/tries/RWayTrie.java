@@ -7,7 +7,7 @@ import ua.yandex.shad.collections.MyArrayList;
  */
 public class RWayTrie implements Trie {
     
-    private final static int R = 26;
+    private static final int R = 26;
     
     private final Node[] startNodes;
     
@@ -128,13 +128,16 @@ public class RWayTrie implements Trie {
         }
         return current;
     }
+    
+    private int findIndex(char i, char j){
+        return R * (i - 'a') + (j - 'a');
+    }
 
     @Override
     public void add(Tuple t) {
-        Node x = this.startNodes[R * (t.getTerm().charAt(0) - 'a') 
-                + (t.getTerm().charAt(1) - 'a')];
-        this.startNodes[R * (t.getTerm().charAt(0) - 'a') 
-                + (t.getTerm().charAt(1) - 'a')] = add(x, t.getTerm(), 2);
+        int index = findIndex(t.getTerm().charAt(0), t.getTerm().charAt(1));
+        Node x = startNodes[index];
+        this.startNodes[index] = add(x, t.getTerm(), 2);
     }
     
     private boolean contains(Node x, String s, int k) {
@@ -157,8 +160,7 @@ public class RWayTrie implements Trie {
 
     @Override
     public boolean contains(String word) {
-        Node x = this.startNodes[R * (word.charAt(0) - 'a') 
-                + (word.charAt(1) - 'a')];
+        Node x = startNodes[findIndex(word.charAt(0), word.charAt(1))];
         return contains(x, word, 2);
         
     }
@@ -194,10 +196,9 @@ public class RWayTrie implements Trie {
     @Override
     public boolean delete(String word) { 
         int sizeWas = size;
-        Node x = this.startNodes[R * (word.charAt(0) - 'a') 
-                + (word.charAt(1) - 'a')];
-        this.startNodes[R * (word.charAt(0) - 'a') 
-                + (word.charAt(1) - 'a')] = delete(x, word, 2);
+        int index = findIndex(word.charAt(0), word.charAt(1));
+        Node x = startNodes[index];
+        startNodes[index] = delete(x, word, 2);
         int sizeNow = size;
         return sizeWas - sizeNow == 1;  
     }
@@ -220,8 +221,8 @@ public class RWayTrie implements Trie {
         words = new MyArrayList();
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < R; j++) {
-                Node x = this.startNodes[R * i + j];
-                findWords(x, "" + (char)('a' + i) + (char)('a' + j), words);
+                Node x = startNodes[R * i + j];
+                findWords(x, "" + (char) ('a' + i) + (char) ('a' + j), words);
             }
         }
         return words;    
@@ -234,16 +235,16 @@ public class RWayTrie implements Trie {
         }
         if (k < prefix.length()) {
             if (prefix.charAt(k) < x.getC()) {
-                this.findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
+                findWordsWithPrefix(x.getLeft(), s, prefix, k, arr);
             }
             else if (prefix.charAt(k) > x.getC()) {
-                this.findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
+                findWordsWithPrefix(x.getRight(), s, prefix, k, arr);
             }
             else {
                 if (k == prefix.length() - 1 && x.isVal()) {
                     arr.add(prefix);
                 }
-                this.findWordsWithPrefix(x.getMiddle(), s + x.getC(),
+                findWordsWithPrefix(x.getMiddle(), s + x.getC(),
                         prefix, k + 1, arr);
             }      
         }
@@ -267,15 +268,14 @@ public class RWayTrie implements Trie {
         Node x;
         if (s.length() == 1) {
             for (int i = 0; i < R; i++) {
-                x = this.startNodes[R * (s.charAt(0) - 'a') 
+                x = startNodes[R * (s.charAt(0) - 'a') 
                     + i];
-                String prefix = "" + s.charAt(0) + (char)('a' + i);
+                String prefix = "" + s.charAt(0) + (char) ('a' + i);
                 findWordsWithPrefix(x, prefix, s, 2, words);
             }
         }
         else {
-            x = this.startNodes[R * (s.charAt(0) - 'a') 
-                    + (s.charAt(1) - 'a')];
+            x = startNodes[findIndex(s.charAt(0), s.charAt(1))];
             String prefix = "" + s.charAt(0) + s.charAt(1);
             findWordsWithPrefix(x, prefix, s, 2, words);
         }

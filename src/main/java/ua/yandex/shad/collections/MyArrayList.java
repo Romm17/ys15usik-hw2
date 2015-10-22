@@ -7,6 +7,7 @@ package ua.yandex.shad.collections;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Romam Usik
@@ -60,6 +61,9 @@ public class MyArrayList<E> implements Iterable<E> {
 
         @Override
         public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             return elementData[++curr];
         }
         
